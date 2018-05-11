@@ -26,7 +26,7 @@ const sendMessage = (content, onSuccess) => {
     }
   };
 
-	xhr.open('POST', API_URL_MESSAGE, true);
+	xhr.open('POST', API_URL_MESSAGES, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({
     message: encodeHTML(String(content))
