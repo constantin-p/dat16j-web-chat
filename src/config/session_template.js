@@ -1,4 +1,4 @@
-// Rename to db_secrets.js, replace '<VALUE>'
+// Rename to session_secrets.js, replace '<VALUE>'
 const SESSION_SECRETS = {
   'secret' : '<VALUE>'
 };
