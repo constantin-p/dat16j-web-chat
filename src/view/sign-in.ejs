@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign in | Web Chat</title>
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+
+
+    <div id="app-root">
+        <div class="container" style="padding-top: 2rem;">
+            <header class="navbar">
+                <!-- Brand -->
+                <section class="navbar-section">
+                    <a class="navbar-brand">
+                        <strong>Web Chat</strong>
+                    </a>
+                </section>
+                <!-- END Brand -->
+
+
+                <!-- Links -->
+                <section class="navbar-section">
+                    <a class="btn btn-link" href="/sign-in">Sign in</a>
+                    <a class="btn btn-link" href="/sign-up">Sign up</a>
+                </section>
+                <!-- END Links -->
+            </header>
+
+
+            <div class="columns" style="margin-top: 25vh;">
+                <form class="col-xs-10 col-sm-6 col-md-5 col-4 col-mx-auto" action="/sign-in" method="post">
+                    <header style="margin-bottom: 3rem;">
+                        <h1 class="text-center">Welcome back</h1>
+                    </header>
+
+                    <div class="form-group">
+                        <input type="text" class="form-input" name="email" placeholder="Email address">
+                        <input type="password" class="form-input" name="password" placeholder="Password">
+                    </div> <!-- END .form-group -->
+
+                    <div class="feedback">
+                        <% if (message.length > 0) { %>
+                            <div class="feedback-msg"><%= message %></div>
+                        <% } %>
+                    </div>  
+
+                    <footer class="flex-center" style="margin-top: 3rem;">
+                        <button type="submit" class="btn btn-link">Sign in</button>
+                    </footer>
+                </form>
+            </div>
+        </div> <!-- END .container -->
+    </div> <!-- END #app-root -->
+
+</body>
+</html>
