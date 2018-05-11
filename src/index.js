@@ -14,6 +14,9 @@ const SESSIONConfig = require('./config/session_secrets.js');
 const configPassport = require('./config/passport');
 const configRoutes = require('./routes');
 
+const http = require('http').Server(app)
+const io = require('socket.io')(http);
+
 
 mongoose.connect(DBConfig.url);
 
@@ -24,7 +27,7 @@ app.use(morgan('dev'));
 // parse html forms
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: false
 }));
 // use ejs for templating
 app.set('views', __dirname + '/view');
@@ -45,9 +48,18 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 
-configRoutes(app, passport);
-app.listen(port, () => {
-	console.log('Server listening on port: ' + port);
-});
+configRoutes(app, passport, io);
+const server = http.listen(8080, () => {
+	console.log('Server listening on port: ' + server.address().port);
+})
 
+
+// Socket IO
+io.on('connection', (socket) => {
+  console.log('Socket connected...');
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
 

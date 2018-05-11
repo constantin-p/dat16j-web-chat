@@ -1,6 +1,8 @@
-module.exports = (app, passport) => {
+const Message = require('./model/message.js');
+
+module.exports = (app, passport, io) => {
 	app.get('/', (req, res) => {
-    res.render('index.ejs')
+    res.redirect('/sign-in');
   });
 
   // Sign in
@@ -38,6 +40,49 @@ module.exports = (app, passport) => {
   app.get('/home', isLoggedIn, (req, res) => {
     res.render('home.ejs', {
       user: req.user, // Pass the user obj from session
+    });
+  });
+
+
+  // MESSAGES API | Protected
+  app.post('/api/messages', isLoggedIn, (req, res) => {
+    console.log('Create message ', req.body);
+    if (req.body.message) {
+      console.log('Create message with body: ', req.body.message);
+      var newMessage = new Message();
+
+      newMessage.body = req.body.message;
+      newMessage.author = req.user;
+
+      newMessage.save((err) => {
+        if (err) {
+          res.send(err);
+        }
+
+        io.emit('message', newMessage);
+        res.json({ message: 'Messages created!' });
+      });
+    } else {
+      console.log(req.body);
+      res.status(400).send({ error: 'Missing message content!' })
+    }
+  })
+
+  app.get('/api/messages', isLoggedIn, (req, res) => {
+    console.log('Request messages!');
+    Message.find()
+    .sort('-createdAt')
+    .limit(50)
+    .populate({
+      path: 'author',
+      select: 'email'
+    })
+    .exec((err, messages) => {
+      if (err) {
+        res.send(err);
+      }
+
+      res.json(messages);
     });
   });
 }

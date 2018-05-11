@@ -5,32 +5,54 @@
 
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body>
-
+<body class="chat-page">
 
     <div id="app-root">
-        <div class="container" style="padding-top: 2rem;">
-            <header class="navbar">
-                <!-- Brand -->
-                <section class="navbar-section">
-                    <a class="navbar-brand">
-                        <strong>Web Chat</strong>
-                    </a>
-                </section>
-                <!-- END Brand -->
+        <div class="chat-wrapper">
+            <div class="container" style="padding-top: 2rem;">
+                <header class="navbar">
+                    <!-- Brand -->
+                    <section class="navbar-section">
+                        <a class="navbar-brand">
+                            <strong>Web Chat</strong>
+                        </a>
+                    </section>
+                    <!-- END Brand -->
 
 
-                <!-- Links -->
-                <section class="navbar-section">
-                    <p class="user"><%= user.email %></p>
-                    <a class="btn btn-link" href="/sign-out">Sign out</a>
-                </section>
-                <!-- END Links -->
-            </header>
+                    <!-- Links -->
+                    <section class="navbar-section">
+                        <p class="user"><%= user.email %></p>
+                        <a class="btn btn-link" href="/sign-out">Sign out</a>
+                    </section>
+                    <!-- END Links -->
+                </header>
+            </div> <!-- END .container -->
+            <div class="chat-container container">
+                <a class="sidebar-toggle" href="#chat-sidebar">
+                    Menu
+                </a>
 
+                <div class="sidebar" id="chat-sidebar">
+                    <ul id="chat-users"></ul>
+                </div> <!-- END .sidebar#chat-sidebar -->
 
-        </div> <!-- END .container -->
+                <a class="sidebar-overlay" href="#close"></a>
+                
+                <div class="content">
+                    <div class="chat-history">
+                        <ul id="chat-history"></ul>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" name="chat-message" id="chat-message">
+                    </div>
+                </div> <!-- END .content -->
+            </div>
+        </div> <!-- END .chat-wrapper -->
     </div> <!-- END #app-root -->
 
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
