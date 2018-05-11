@@ -1,5 +1,6 @@
+// Rename to db_secrets.js, replace '<VALUE>'
 const SESSION_SECRETS = {
-  'secret' : 'bc3291b4d368c829cf1a80a59dca0'
+  'secret' : '<VALUE>'
 };
 
 module.exports = SESSION_SECRETS;
