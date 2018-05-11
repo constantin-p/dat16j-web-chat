@@ -1,4 +1,4 @@
-# dat16j-web-chat
+# [dat16j-web-chat](https://github.com/constantin-p/dat16j-web-chat)
 
 ### Build Instructions
 
