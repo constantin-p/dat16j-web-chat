@@ -46,7 +46,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 
 configRoutes(app, passport);
-app.listen(port);
-console.log('Server listening on port: ' + port);
+app.listen(port, () => {
+	console.log('Server listening on port: ' + port);
+});
 
 
