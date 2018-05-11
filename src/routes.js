@@ -1,4 +1,5 @@
 const Message = require('./model/message.js');
+const User = require('./model/user.js');
 
 module.exports = (app, passport, io) => {
 	app.get('/', (req, res) => {
@@ -77,6 +78,20 @@ module.exports = (app, passport, io) => {
       path: 'author',
       select: 'email'
     })
+    .exec((err, messages) => {
+      if (err) {
+        res.send(err);
+      }
+
+      res.json(messages);
+    });
+  });
+
+  app.get('/api/users', isLoggedIn, (req, res) => {
+    console.log('Request users!');
+    User.find()
+    .select('email')
+    .sort('-email')
     .exec((err, messages) => {
       if (err) {
         res.send(err);

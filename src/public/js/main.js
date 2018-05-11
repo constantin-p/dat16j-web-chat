@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:8080/api/messages';
+const API_URL_MESSAGES = 'http://localhost:8080/api/messages';
+const API_URL_USERS = 'http://localhost:8080/api/users';
 
 const encodeHTML = (str) => {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
@@ -25,14 +26,14 @@ const sendMessage = (content, onSuccess) => {
     }
   };
 
-	xhr.open('POST', API_URL, true);
+	xhr.open('POST', API_URL_MESSAGE, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({
     message: encodeHTML(String(content))
   }));
 }
 
-const getMessages = (onSuccess) => {
+const getRequest = (API_ENDPOINT, onSuccess) => {
   var xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function () {
@@ -45,10 +46,31 @@ const getMessages = (onSuccess) => {
     }
   };
 
-  xhr.open('GET', API_URL, true);
+  xhr.open('GET', API_ENDPOINT, true);
   xhr.send();
 }
 
+const getMessages = (onSuccess) => {
+  getRequest(API_URL_MESSAGES, onSuccess);
+}
+
+const getUsers = (onSuccess) => {
+  getRequest(API_URL_USERS, onSuccess);
+}
+
+
+const initUsers = (node, users) => {
+	for (let i = 0; i < users.length; i++) {
+		appendUser(node, users[i])
+	}
+}
+
+const appendUser = (node, content) => {
+	const userNode = document.createElement('li');
+	userNode.innerText = content.email;
+	
+	node.appendChild(userNode);
+}
 
 const initMessages = (node, messages) => {
 	for (let i = 0; i < messages.length; i++) {
@@ -102,21 +124,21 @@ const onDOMReady = (cb) => {
 }
 
 onDOMReady(() => {
-	const msgInput = document.getElementById('chat-message');
-	const msgHistory = document.getElementById('chat-history');
-	const users = document.getElementById('chat-users');
+	const $msgInput = document.getElementById('chat-message');
+	const $msgHistory = document.getElementById('chat-history');
+	const $users = document.getElementById('chat-users');
 
 	// Send message on Enter
-	msgInput.onkeypress = (event) => {
+	$msgInput.onkeypress = (event) => {
 		if (!event) {
 			event = window.event;
 		}
     const keyCode = event.keyCode || event.which;
     if (keyCode == '13'){
       // Enter pressed
-      sendMessage(msgInput.value, () => {
+      sendMessage($msgInput.value, () => {
       	// clear the input
-      	msgInput.value = '';
+      	$msgInput.value = '';
       });
       return false;
     }
@@ -124,7 +146,12 @@ onDOMReady(() => {
 
   getMessages((messages) => {
   	console.log('[GET] Initial messages:', messages);
-  	initMessages(msgHistory, messages)
+  	initMessages($msgHistory, messages)
+  });
+
+  getUsers((users) => {
+  	console.log('[GET] Initial users:', users);
+  	initUsers($users, users)
   });
 
 
@@ -132,7 +159,7 @@ onDOMReady(() => {
   const socket = io();
   socket.on('message', (msg) => {
   	console.log('[Socket] New message:', msg);
-  	appendMessage(msgHistory, msg);
+  	appendMessage($msgHistory, msg);
   });
 });
 
